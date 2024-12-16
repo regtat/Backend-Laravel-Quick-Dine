@@ -13,15 +13,11 @@ return new class extends Migration
     {
         Schema::create('detail_pesanan', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_pesanan');
-            $table->unsignedBigInteger('id_menu');
+            $table->foreignId('id_pesanan')->references('id')->on('pesanan')->onDelete('cascade');
+            $table->foreignId('id_menu')->references('id')->on('menu')->onDelete('cascade');
             $table->integer('jumlah');
             $table->integer('subtotal')->default(0);
             $table->timestamps();
-
-            $table->foreign('id_pesanan')->references('id')->on('pesanan')->onDelete('cascade');
-            $table->foreign('id_menu')->references('id')->on('menu')->onDelete('cascade');
-        
         });
     }
 

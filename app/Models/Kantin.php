@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Kantin extends Model
 {
+    use HasFactory;
     protected $table = 'kantin';
     protected $fillable = [
         'nama_kantin',
@@ -17,7 +19,7 @@ class Kantin extends Model
     }
 
     //id_karyawan -> id user
-    public function karyawan(){
+    public function user(){
         return $this->belongsTo(User::class, 'id_karyawan');
     }
 

@@ -10,20 +10,27 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    public function register(Request $request){
+
+    //get all
+    public function users() {
+        $users = User::all();
+        return response()->json(['users' => $users]);
+    }
+    public function register(Request $request)
+    {
         //validasi
         $user = $request->validate([
             'name' => 'required|string',
             'email' => 'required|email|unique:users,email',
             'notelp' => 'required|string|digits:12',
             'password' => 'required|min:6|confirmed',
-            'role'=>'required|in:admin,karyawan,mahasiswa'
+            'role' => 'required|string'
         ]);
 
         //set default role mhs
-        $role=$request->input('role','mahasiswa');
+        $role = $request->input('role', 'mahasiswa');
         //create user
-        $user=User::create([
+        $user = User::create([
             'name' => $user['name'],
             'email' => $user['email'],
             'notelp' => $user['notelp'],
@@ -36,10 +43,11 @@ class AuthController extends Controller
             'user' => $user,
             // 'token'=>$request->createToken($request->token_name), //give a secret to sanctum to verify tokens with
 
-            'token'=>$user->createToken('secret')->plainTextToken,
+            'token' => $user->createToken('secret')->plainTextToken,
         ], 200);
     }
-    public function login(Request $request){
+    public function login(Request $request)
+    {
         //validasi
         $user = $request->validate([
             'email' => 'required|email',
@@ -47,9 +55,12 @@ class AuthController extends Controller
         ]);
 
         //cek
-        if(!Auth::attempt($user)){
-            return response([
-                'message'=>'invalid credentials'], 403
+        if (!Auth::attempt($user)) {
+            return response(
+                [
+                    'message' => 'invalid credentials'
+                ],
+                403
             );
         }
         $user = Auth::user();
@@ -59,23 +70,78 @@ class AuthController extends Controller
         return response([
             'user' => $user,
             // 'token'=>$user->createToken('auth_token')->plainTextToken,
-            'token'=>$token,
+            'token' => $token,
         ], 200);
     }
 
     //logout
-    public function logout(Request $request){
+    public function logout(Request $request)
+    {
         $request->user()->currentAccessToken()->delete();
         return response([
-            'message'=>'Logout success'
+            'message' => 'Logout success'
         ], 200);
     }
 
     //get user details
-    public function user(){
-        $user=Auth::user();
+    public function user()
+    {
+        $user = Auth::user();
         return response([
-            'user'=>$user
+            'user' => $user
         ], 200);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $data = $request->validate([
+            'name' => 'nullable|string',
+            'notelp' => 'nullable|string',
+            'role'=>'nullable|string'
+        ]);
+
+        $image = $this->saveImage($request->image, 'profil');
+
+        $user = User::find($id);
+
+        if(!$user){
+            return response([
+                'message'=>'User tidak ditemukan.'
+            ], 404);
+        }
+
+        if (isset($data['name'])) {
+            $user->name = $data['name'];
+        }
+        if (isset($data['notelp'])) {
+            $user->notelp = $data['notelp'];
+        }
+        if (isset($data['role'])) {
+            $user->role = $data['role'];
+        }
+    
+        $user->save();
+    
+        
+
+        return response([
+            'status' => 'success',
+            'message' => 'User berhasil diubah.'
+        ], 200);
+    }
+
+
+    public function destroy($id){
+        $user=User::find($id);
+
+        if(!$user){
+            return response([
+                'message'=>'User tidak ditemukan.'
+            ], 404);
+        }
+        $user->delete();
+        return response([
+            'message'=>'User berhasil dihapus.'
+        ],200);
     }
 }

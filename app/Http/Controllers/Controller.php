@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 abstract class Controller
 {
     public function saveImage($image, $path='public'){
-        if($image){
+        if(!$image){
             return null;
         }
         try {

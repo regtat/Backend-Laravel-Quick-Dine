@@ -10,19 +10,31 @@ use Illuminate\Support\Facades\Auth;
 
 class PesananController extends Controller
 {
-    public function index(Request $request){
+    public function index(Request $request, $id_kantin=null){
         //ambil user yg sedang login
         $user=$request->user();
         
-        //ambil pesanan+detail pesanan pny user
-        $pesanan=Pesanan::where('id_user', $user->id)->with('detailPesanan')->get();
-    
-        // $pesanan=Pesanan::where('id_kantin', $user->id_kantin)->with('detailPesanan')->get();
+        //jika user ingin melihat pesanan miliknya sendiri
+    if ($user->role == 'mahasiswa') {
+        $pesanan = Pesanan::where('id_user', $user->id)
+                    ->with('user:id,name', 'kantin:id,nama_kantin')
+                    ->get();
 
         return response([
-            'pesanan'=>$pesanan
+            'pesanan' => $pesanan
         ], 200);
-    
+    }
+
+    //jika karyawan ingin melihat pesanan kantin mereka
+    if ($user->role == 'karyawan' && $id_kantin) {
+        $pesanan = Pesanan::find('id_kantin', $id_kantin)
+                    ->with('user:id,name', 'kantin:id,nama_kantin')
+                    ->get();
+
+        return response([
+            'pesanan' => $pesanan
+        ], 200);
+    }
 }
 
     public function show($id){
@@ -41,6 +53,7 @@ class PesananController extends Controller
     }
 
     public function store(Request $request, $id_kantin){
+        
         $data=$request->validate([
             'metode_pembayaran' => 'required|string',
             'bukti_pembayaran' => 'nullable|string',

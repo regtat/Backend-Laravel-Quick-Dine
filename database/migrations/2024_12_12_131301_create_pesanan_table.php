@@ -13,18 +13,15 @@ return new class extends Migration
     {
         Schema::create('pesanan', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_user');
-            $table->unsignedBigInteger('id_kantin');
+            $table->foreignId('id_user')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('id_kantin')->references('id')->on('kantin')->onDelete('cascade');
             $table->integer('total');
-            $table->enum('status',['menunggu','diproses','selesai']);
-            $table->enum('diantar_diambil', ['diantar', 'diambil']); //pilihan pengiriman
+            $table->string('status');
+            $table->string('diantar_diambil'); //pilihan pengiriman
             $table->string('lok_pengantaran')->nullable();
             $table->string('metode_pembayaran');
             $table->string('bukti_pembayaran')->nullable();
             $table->timestamps();
-
-            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign( 'id_kantin')->references('id')->on('kantin')->onDelete('cascade');
         });
     }
 

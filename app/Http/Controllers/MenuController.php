@@ -80,7 +80,7 @@ class MenuController extends Controller
             // Mengunggah gambar jika ada
             $image = null;
             if ($request->hasFile('image')) {
-                $image = $this->saveImage($request->file('image'), 'kantin');
+                $image = $this->saveImage($request->image, 'kantin');
             }
 
         Menu::create([
@@ -129,6 +129,12 @@ class MenuController extends Controller
             'image'=>'string',
             'stok'=>'integer',
         ]);
+        try {
+            // Mengunggah gambar jika ada
+            $image = null;
+            if ($request->hasFile('image')) {
+                $image = $this->saveImage($request->image, 'kantin');
+            }
 
         $menu->update($data);
 
@@ -137,7 +143,10 @@ class MenuController extends Controller
             'message'=>'Menu berhasil diubah.'
         ],200);
     }
-
+    catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+}
     public function destroy($id){
         $menu=Menu::find($id);
         if(!$menu){

@@ -18,10 +18,8 @@ return new class extends Migration
             $table->integer('harga');
             $table->string('image')->nullable();
             $table->integer('stok');
-            $table->unsignedBigInteger('id_kantin');
+            $table->foreignId('id_kantin')->nullable()->constrained('kantin')->onDelete('cascade');
             $table->timestamps();
-
-            $table->foreign('id_kantin')->references('id')->on('kantin')->onDelete('cascade');
         });
     }
 
