@@ -126,4 +126,9 @@ class KantinController extends Controller
             'message'=>'Kantin berhasil dihapus.'
         ],200);
     }
+
+    public function getTotalKantin(){
+        $totalKantin=Kantin::count();
+        return response()->json(['total_kantin'=>$totalKantin], 200);
+    }
 }

@@ -144,4 +144,9 @@ class AuthController extends Controller
             'message'=>'User berhasil dihapus.'
         ],200);
     }
+
+    public function getTotalUser(){
+        $totalUser=User::count();
+        return response()->json(['total_user'=>$totalUser], 200);
+    }
 }
