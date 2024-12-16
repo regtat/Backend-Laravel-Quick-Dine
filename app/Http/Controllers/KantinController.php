@@ -58,11 +58,15 @@ class KantinController extends Controller
         $kantin=$request->validate([
             'nama_kantin'=>'required|string|unique:kantin,nama_kantin', //biar gada duplikasi
             'id_karyawan' => 'required|exists:users,id', //validasi bahwa id_karyawan harus ada di tabel users
+            'metode_pembayaran'=>'required|string',
+            'no_telp'=>'required|string'
         ]);
 
         $kantin=Kantin::create([
             'nama_kantin'=>$kantin['nama_kantin'],
             'id_karyawan'=>$kantin['id_karyawan'],
+            'metode_pembayaran'=>$kantin['metode_pembayaran'],
+            'no_telp'=>$kantin['no_telp']
         ]);
 
         return response([
@@ -98,6 +102,8 @@ class KantinController extends Controller
         $data=$request->validate([
             'nama_kantin'=>'string|unique:kantin,nama_kantin',
             'id_karyawan'=>'integer',
+            'metode_pembayaran'=>'string',
+            'no_telp'=>'string'
         ]);
 
         $kantin->update($data);
