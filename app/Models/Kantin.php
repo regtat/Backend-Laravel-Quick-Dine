@@ -12,6 +12,8 @@ class Kantin extends Model
     protected $fillable = [
         'nama_kantin',
         'id_karyawan',
+        'metode_pembayaran',
+        'no_telp'
     ];
 
     public function menu(){

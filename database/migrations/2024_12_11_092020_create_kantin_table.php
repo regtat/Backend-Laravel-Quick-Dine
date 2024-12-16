@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('nama_kantin')->unique();
             $table->foreignId('id_karyawan')->nullable()->constrained('users')->onDelete('set null');
+            $table->string('metode_pembayaran');
+            $table->string('no_telp');
             $table->timestamps();
 
         });
