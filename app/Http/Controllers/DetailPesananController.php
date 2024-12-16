@@ -79,4 +79,9 @@ class DetailPesananController extends Controller
             'message' => 'Detail pesanan berhasil dihapus.'
         ], 200);
     }
+
+    public function getTotalDetailPesanan(){
+        $totalDetailPesanan=Pesanan::count();
+        return response()->json(['total_detail_pesanan'=>$totalDetailPesanan], 200);
+    }
 }

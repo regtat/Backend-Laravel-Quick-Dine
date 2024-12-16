@@ -171,4 +171,9 @@ class MenuController extends Controller
             'message'=>'Menu berhasil dihapus.'
         ],200);
     }
+
+    public function getTotalMenu(){
+        $totalMenu=Menu::count();
+        return response()->json(['total_menu'=>$totalMenu], 200);
+    }
 }
