@@ -13,8 +13,8 @@ class KantinController extends Controller
         $user = Auth::user();
     
         try {
-            if ($user->role == 'mahasiswa' || $user->role == 'admin') {
-                $kantin = Kantin::with('user:id,name')->get();
+            if ($user->role == 'Mahasiswa' || $user->role == 'Admin') {
+                $kantin = Kantin::all();
             } else {
                 $kantin = Kantin::with('user:id,name')->where('id_karyawan', $user->id)->get();
             }
