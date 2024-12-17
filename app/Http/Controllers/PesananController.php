@@ -158,9 +158,9 @@ class PesananController extends Controller
             'message'=>'Pesanan berhasil dihapus.'
         ],200);
     }
-
-    public function getTotalPesanan(){
-        $totalPesanan=Menu::count();
+    
+    public function getTotalPesanan($id_kantin){
+        $totalPesanan=Pesanan::where('id_kantin', $id_kantin)->count();
         return response()->json(['total_pesanan'=>$totalPesanan], 200);
     }
 }
