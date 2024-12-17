@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 class PesananController extends Controller
 {
-    public function index(Request $request, $id_kantin=null){
+    public function index(Request $request, $id_kantin){
         //ambil user yg sedang login
         $user=$request->user();
         
@@ -27,7 +27,7 @@ class PesananController extends Controller
 
     //jika karyawan ingin melihat pesanan kantin mereka
     if ($user->role == 'karyawan' && $id_kantin) {
-        $pesanan = Pesanan::find('id_kantin', $id_kantin)
+        $pesanan = Pesanan::where('id_kantin', $id_kantin)
                     ->with('user:id,name', 'kantin:id,nama_kantin')
                     ->get();
 

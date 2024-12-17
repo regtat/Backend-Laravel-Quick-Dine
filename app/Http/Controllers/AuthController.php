@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Kantin;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -46,33 +47,36 @@ class AuthController extends Controller
             'token' => $user->createToken('secret')->plainTextToken,
         ], 200);
     }
-    public function login(Request $request)
-    {
-        //validasi
-        $user = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|min:6',
-        ]);
 
-        //cek
-        if (!Auth::attempt($user)) {
-            return response(
-                [
-                    'message' => 'invalid credentials'
-                ],
-                403
-            );
-        }
-        $user = Auth::user();
-        $token = $user->createToken('secret')->plainTextToken;
+public function login(Request $request)
+{
+    // Validasi input
+    $user = $request->validate([
+        'email' => 'required|email',
+        'password' => 'required|min:6',
+    ]);
 
-        //return user & token in response
+    // Cek kredensial
+    if (!Auth::attempt($user)) {
         return response([
-            'user' => $user,
-            // 'token'=>$user->createToken('auth_token')->plainTextToken,
-            'token' => $token,
-        ], 200);
+            'message' => 'Invalid credentials'
+        ], 403);
     }
+
+    $user = Auth::user();
+    $token = $user->createToken('secret')->plainTextToken;
+
+    // Cek apakah user memiliki id_kantin
+    $kantin = Kantin::where('id_karyawan', $user->id)->first();
+
+    // Return response dengan id_kantin jika ada
+    return response([
+        'user' => $user,
+        'id_kantin' => $kantin ? $kantin->id : null, // null jika tidak ada id_kantin
+        'token' => $token,
+    ], 200);
+}
+
 
     //logout
     public function logout(Request $request)

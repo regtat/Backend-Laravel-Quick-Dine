@@ -21,8 +21,8 @@ Route::group(['middleware'=> ['auth:sanctum']], function(){
 
     Route::get('/users/count', [AuthController::class, 'getTotalUser']);
     Route::get('/kantin/count', [KantinController::class, 'getTotalKantin']);
-    Route::get('/menu/count', [MenuController::class, 'getTotalMenu']);
-    Route::get('/pesanan/count', [PesananController::class, 'getTotalPesanan']);
+    Route::get('/kantin/{id_kantin}/menu/count', [MenuController::class, 'getTotalMenu']);
+    Route::get('/kantin/{id_kantin}/pesanan/count', [PesananController::class, 'getTotalPesanan']);
     Route::get('/detailPesanan/count', [DetailPesananController::class, 'getTotalDetailPesanan']);
 
     Route::get('/users', [KantinController::class, 'getUsers']);
