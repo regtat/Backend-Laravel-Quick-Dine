@@ -23,7 +23,7 @@ class MenuController extends Controller
         return response([
             'kantin' => $kantin->nama_kantin,
             'menu' => $kantin->menu()
-                ->select('id', 'nama_menu', 'harga', 'stok', 'image', 'id_kantin')
+                ->select('id', 'nama_menu', 'harga', 'deskripsi', 'stok', 'image', 'id_kantin')
                 ->get()
         ], 200);
     }
