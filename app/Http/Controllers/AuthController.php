@@ -29,7 +29,7 @@ class AuthController extends Controller
         ]);
 
         //set default role mhs
-        $role = $request->input('role', 'mahasiswa');
+        $role = $request->input('role', 'Mahasiswa');
         //create user
         $user = User::create([
             'name' => $user['name'],
