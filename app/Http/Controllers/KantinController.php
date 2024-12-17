@@ -49,7 +49,7 @@ class KantinController extends Controller
     }
 
     public function getUsers(){
-        $user=User::select('id','name','email')->get();
+        $user=User::select('id','name','email','role')->get();
         return response([
             'users'=>$user
         ],200);
