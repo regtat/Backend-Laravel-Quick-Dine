@@ -86,7 +86,7 @@ class KantinController extends Controller
             ], 404);
         }
         $user=Auth::user();
-        if($user->role!='admin' && $kantin->id_karyawan!= $user){
+        if($user->role!='admin'||$user->role!='Admin' && $kantin->id_karyawan!= $user){
             return response([
                         'status'=>'error',
                         'message'=>'Anda tidak memiliki akses untuk mengedit kantin ini.'
