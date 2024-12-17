@@ -100,7 +100,7 @@ class KantinController extends Controller
         // }
 
         $data=$request->validate([
-            'nama_kantin'=>'string|unique:kantin,nama_kantin',
+            'nama_kantin'=>'string',
             'id_karyawan'=>'integer',
             'metode_pembayaran'=>'string',
             'no_telp'=>'string'
